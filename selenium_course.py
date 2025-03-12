@@ -52,29 +52,97 @@ driver.mobile_emulation() #driver.mobile_emulation() is used to emulate the mobi
 
 """5) wait commands"""
 driver.implicitly_wait(10) #driver.implicitly_wait() is used to wait for the element to load on the website, this remains active for all elements on the website coded after this command
+
 wait = WebDriverWait(driver, 10) #wait = WebDriverWait(driver, 10) is used to wait for the element to load on the website, this remains 
 element = wait.until(EC.presence_of_element_located((By.ID, "search"))) #element = wait.until(EC.presence_of_element_located((By.ID, "search"))) is used to wait for the element to load on the website, this remains active for the element coded after this command
 
 #difference between implicitly_wait and WebDriverWait is that implicitly_wait is used for all the elements on the website coded after this command and WebDriverWait is used for a specific element coded after this command
 
-driver.find_element(By.XPATH, "/html/body/div[1]/div[1]/div[1]/div[2]/div/div[4]/button[1]").click() #another way
-driver.find_element(By.XPATH, "/html/body/div[1]/div[1]/div[1]/div[2]/div/div[4]/button[1]").send_keys("laptop") #another way
-time.sleep(5)
-driver.maximize_window()
-driver.find_element(By.LINK_TEXT, " this is for a ref scenario which contains links ") # for images with links 
-sliders=driver.find_elements(By.CLASS_NAME, "homeslider container") # no of sliders on a image 
-links=driver.find_elements(By.TAG_NAME, "a") #no of links on a page 
-print(len(sliders))
-print(len(links))
-#driver.close()
-#driver.quit()
-#driver.close() closes one browser at a time
- #driver.quit()   closes all browsers 
 
-#css selector ( tag and id , tag and class , tag and attribute , tag , class and attribute)
-driver.find_element(By.CSS_SELECTOR,"input#email")
+"""locators= id , name, linktext, classname , tagname"""
+driver.find_element(By.ID, "username")      #driver.find_element(By.ID, " ") is used to find the element by id
+                                            #html code syntax: <input id="username" name="username" type="text"> 
+driver.find_element(By.NAME, "username")    #driver.find_element(By.NAME, "text ") is used to find the element by name
+                                            #html code syntax: <input id="username" name="username" type="text">
+driver.find_element(By.LINK_TEXT, "Sign in")#driver.find_element(By.LINK_TEXT, "text") is used to find the element by link text
+                                            #html code syntax: <a href="https://www.google.com">Sign in</a>
+driver.find_element(By.CLASS_NAME, "text")  #driver.find_element(By.CLASS_NAME, "text ") is used to find the element by class name
+                                            #html code syntax: <p class="text">text</p>
+driver.find_element(By.TAG_NAME, "p")       #driver.find_element(By.TAG_NAME, "text ") is used to find the element by tag name
+                                            #html code syntax: <p>text</p>
 
-#locators= id , name, linktext, classname , tagname
-#Customized_locators= CSS Selector, Xpath and Xpath Axes
+"""Customized locators= CSS Selector, Xpath and Xpath Axes"""\
 
+   """ 1) CSS Selector""""
+# 1️⃣ Tag + ID Selector
+# 📝 Corresponding HTML:
+# <input type="text" id="username" placeholder="Enter username">
+# Selects an input field with the ID "username" and enters text.
+driver.find_element(By.CSS_SELECTOR, "input#username").send_keys("admin")
 
+# 2️⃣ Tag + Class Selector
+# 📝 Corresponding HTML:
+# <button class="submit-btn">Submit</button>
+# Selects a button with class "submit-btn" and clicks it.
+driver.find_element(By.CSS_SELECTOR, "button.submit-btn").click()
+
+# 3️⃣ Tag + Attribute Selector
+# 📝 Corresponding HTML:
+# <input type="email" name="email" placeholder="Enter your email">
+# Selects an input field with name="email" and enters an email address.
+driver.find_element(By.CSS_SELECTOR, "input[name='email']").send_keys("test@example.com")
+
+# 4️⃣ Tag + Class + Attribute Selector
+# 📝 Corresponding HTML:
+# <input class="form-control" type="text" name="search" placeholder="Search...">
+# Selects an input field with class="form-control" and type="text", then enters text.
+driver.find_element(By.CSS_SELECTOR, "input.form-control[type='text']")
+
+# 5️⃣ Tag + Multiple Classes Selector
+# 📝 Corresponding HTML:
+# <button class="btn primary-btn">Click Me</button>
+# Selects a button with both "btn" and "primary-btn" classes and clicks it.
+driver.find_element(By.CSS_SELECTOR, "button.btn.primary-btn")
+
+"""2) Xpath"""
+# 1️⃣ Absolute XPath (Not Recommended)
+# 📝 Corresponding HTML:
+# <html>
+#   <body>
+#     <div>
+#       <form id="loginForm">
+#         <input type="text" id="username" name="username" placeholder="Enter Username">
+# Selects the username input field using the full path
+driver.find_element(By.XPATH, "/html/body/div/form/input").send_keys("admin")
+
+# 2️⃣ Relative XPath (Recommended)
+# 📝 Corresponding HTML:
+# <input type="text" id="username" name="username" placeholder="Enter Username">
+# Selects the username input field using its ID (More reliable)
+driver.find_element(By.XPATH, "//input[@id='username']").send_keys("admin")
+
+# 3️⃣ XPath using Contains Function
+# 📝 Corresponding HTML:
+# <button class="btn primary-btn">Submit</button>
+# Selects a button where class contains "primary"
+driver.find_element(By.XPATH, "//button[contains(@class, 'primary')]").click()
+
+# 4️⃣ XPath using Starts-With Function
+# 📝 Corresponding HTML:
+# <input type="email" name="emailAddress" placeholder="Enter Email">
+# Selects an input field where the name starts with "email"
+driver.find_element(By.XPATH, "//input[starts-with(@name, 'email')]")
+
+# 5️⃣ XPath using Text Function
+# 📝 Corresponding HTML:
+# <a href="#">Forgot Password?</a>
+# Selects an anchor tag using its text
+driver.find_element(By.XPATH, "//a[text()='Forgot Password?']")
+
+# 6️⃣ XPath using Logical Operators
+# 📝 Corresponding HTML:
+# <input type="text" id="username" name="username" placeholder="Enter Username">
+# Selects the username input field using the "and" operator
+driver.find_element(By.XPATH, "//input[@id='username' and @name='username']")
+#if 3 conditions are there then use "and" operator
+driver.find_element(By.XPATH, "//input[@id='username' and @name='username' and @type='text']")
