@@ -72,8 +72,7 @@ driver.find_element(By.TAG_NAME, "p")       #driver.find_element(By.TAG_NAME, "t
                                             #html code syntax: <p>text</p>
 
 """Customized locators= CSS Selector, Xpath and Xpath Axes"""\
-
-   """ 1) CSS Selector""""
+""" 1) CSS Selector"""
 # 1️⃣ Tag + ID Selector
 # 📝 Corresponding HTML:
 # <input type="text" id="username" placeholder="Enter username">
